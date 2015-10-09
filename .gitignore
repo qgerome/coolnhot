@@ -1,2 +1,6 @@
 env
 *.pyc
+nosetests.json
+.idea
+*.db
+*.log
