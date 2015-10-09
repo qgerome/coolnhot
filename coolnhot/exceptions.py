@@ -1,0 +1,2 @@
+class CoolnHotException(Exception):
+  pass
