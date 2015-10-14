@@ -7,14 +7,18 @@ from flask import request
 import arrow
 from . import blueprint
 from ..models import Measurement
+from .. import validators
+
 
 @blueprint.route('/measurements/avg', methods=['GET'])
-def average():
-	end_at = arrow.get(request.args.get('end_at'))
-	start_at = request.args.get('start_at')
-	if start_at:
-		start_at = arrow.get(start_at)
-	else:
+@validators.validate(
+	start_at=validators.Arrow(),
+    end_at=validators.Arrow()
+)
+def average(start_at=None, end_at=None):
+	if not end_at:
+		end_at = arrow.utcnow()
+	if not start_at:
 		start_at = arrow.get(end_at)
 		start_at.replace(minutes=10)
 
