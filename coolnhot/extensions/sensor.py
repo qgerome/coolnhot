@@ -27,7 +27,7 @@ class Sensor(object):
 			self._impl = FakeSensor()
 		else:
 			from .. import si7020
-			self._impl = si7020.Si7020(debug=app.config.get('DEBUG'))
+			self._impl = si7020.Si7020()
 
 	def get_temp(self):
 		if not self._impl:
