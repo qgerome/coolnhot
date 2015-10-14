@@ -14,11 +14,15 @@ def create_app(name, config=None):
 	app.config.from_object(settings)
 	if config:
 		app.config.from_object(config)
-	app.config.from_pyfile("./localsettings.py")
+	app.config.from_pyfile("./settings.py")
 	app.config.from_envvar('APPLICATION_SETTINGS', silent=True)
 	logging.config.dictConfig(app.config.get('LOGGING_CONFIG'))
 
 	db.init_app(app)
 	sensor.init_app(app)
+
+	# Blueprints
+	from api import blueprint
+	app.register_blueprint(blueprint)
 
 	return app

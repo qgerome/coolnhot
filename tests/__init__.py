@@ -4,9 +4,6 @@ from coolnhot.extensions import db
 from . import settings
 from .utils import FlaskTestCaseMixin
 
-# from .factories import UserFactory
-
-
 
 class CoolnHotTestCase(TestCase):
 	pass
@@ -24,6 +21,7 @@ class CoolnHotAppTestCase(FlaskTestCaseMixin, CoolnHotTestCase):
 		super(CoolnHotAppTestCase, self).setUp()
 		self._create_app(__name__, settings)
 		self.db = db
+		self.session = db.session
 		self.client = self.app.test_client()
 		self.app_context = self.app.app_context()
 		self.app_context.push()
