@@ -43,7 +43,7 @@ def validate(validators={}, post=[], api=False, jsonp=None, force_text=False, ad
 			# Gather all args we have into a single multidict
 			args = request.args.copy()
 			args.update(request.form)
-			if request.json:
+			if request.get_json(silent=True):
 				args.update(request.json)
 			args.update(request.files)
 			args.update(view_kwargs)

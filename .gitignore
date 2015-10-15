@@ -4,3 +4,6 @@ nosetests.json
 .idea
 *.db
 *.log
+chrome/coolnhot/libs
+.atomignore
+backend/settings.py
