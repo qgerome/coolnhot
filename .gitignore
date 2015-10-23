@@ -7,3 +7,4 @@ nosetests.json
 chrome/coolnhot/libs
 .atomignore
 backend/settings.py
+chrome/react-chrome-extension-boilerplate/node_modules/

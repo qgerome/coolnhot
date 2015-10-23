@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+import json
+from flask import url_for
 
 __author__ = 'quentingerome'
 
@@ -6,20 +8,27 @@ import logging
 from . import CoolnHotAppTestCase
 from coolnhot.models import Measurement
 from datetime import datetime
+import random
 from dateutil.relativedelta import relativedelta
 
 log = logging.getLogger(__name__)
 
 
 class MeasurementTestCase(CoolnHotAppTestCase):
+	def create_measurement(self, temperature=None, humidity=None, created_at=None):
+		m = Measurement(
+			temperature=temperature or random.randint(-100, 300) / 10,
+			humidity=humidity or random.randint(200, 800) / 10,
+			created_at=created_at
+		)
+		self.session.add(m)
+		return m
+
 	def _create_fixtures(self):
 		super(MeasurementTestCase, self)._create_fixtures()
 
 	def test_create(self):
-		from coolnhot.models import Measurement
-
-		reading = Measurement(temperature=22.5, humidity=45.6)
-		self.session.add(reading)
+		self.create_measurement()
 		self.session.commit()
 		self.assertTrue(Measurement.query.count() == 1)
 
@@ -40,3 +49,16 @@ class MeasurementTestCase(CoolnHotAppTestCase):
 
 		avg = Measurement.query.avg(now - relativedelta(minutes=11), now + relativedelta(seconds=5))
 		self.assertEquals(avg, (6.3, 46))
+
+	def test_get_first_page(self):
+		measurements = [self.create_measurement() for _ in range(10)]
+		self.session.commit()
+		self.session.close()
+		with self.app.test_client() as client:
+			rv = self.assertOkJson(client.get(url_for('api.get_measurements'), data=dict(page=1, items_per_page=5)))
+			content = json.loads(rv.data)
+			self.assertTrue(content['has_next'] is True)
+
+			rv = self.assertOkJson(client.get(url_for('api.get_measurements'), data=dict(page=2, items_per_page=5)))
+			content = json.loads(rv.data)
+			self.assertTrue(content['has_next'] is False)

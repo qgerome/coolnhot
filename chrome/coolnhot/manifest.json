@@ -10,24 +10,21 @@
       "64" : "images/icon_64.png"
    },
    "background": {
-      "scripts": ["libs/jquery/dist/jquery.min.js", "js/background.js"]
+      "scripts": ["libs/jquery/dist/jquery.min.js", "libs/react/react.js", "libs/react/react-dom.js", "js/background.js"]
    },
    "options_ui": {
-      // Required.
       "page": "options.html",
-      // Recommended.
       "chrome_style": true
-      // Not recommended; only provided for backwards compatibility,
-      // and will be unsupported in a future version of Chrome (TBD).
-      //"open_in_tab": true
    },
    "browser_action": {
-      "default_icon": "images/icon_64.png"
+      "default_icon": "images/icon_64.png",
+      "default_popup": "popup.html"
    },
    "permissions": [
      "background",
      "http://cramike.synology.me/*",
      "http://127.0.0.1:5000/*",
+     "https://localhost:3000/*",
      "storage"
    ]
 }

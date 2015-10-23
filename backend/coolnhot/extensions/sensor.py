@@ -2,17 +2,19 @@
 
 __author__ = 'quentingerome'
 __all__ = ['Sensor']
+import random
 
 
 class FakeSensor(object):
-	def __init__(self):
+	def __init__(self, random=False):
+		self.random = random
 		super(FakeSensor, self).__init__()
 
 	def get_temp(self):
-		return 0
+		return random.random() * 30 if self.random else 0
 
 	def get_rel_humidity(self):
-		return 0
+		return random.random() * 60 if self.random else 0
 
 
 class Sensor(object):
@@ -24,7 +26,7 @@ class Sensor(object):
 
 	def init_app(self, app):
 		if app.config.get('SENSOR_DEBUG'):
-			self._impl = FakeSensor()
+			self._impl = FakeSensor(random=True)
 		else:
 			from .. import si7020
 			self._impl = si7020.Si7020()

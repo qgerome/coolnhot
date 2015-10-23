@@ -1,0 +1,22 @@
+{
+  "version": "0.0.0",
+  "name": "react-chrome-extension-example",
+  "manifest_version": 2,
+  "description": "Example for react-chrome-extension-boilerplate",
+  "browser_action": {
+    "default_title": "React Chrome Extension Example",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "img/icon_16.png",
+    "32": "img/icon_32.png",
+    "64": "img/icon_64.png",
+    "128": "img/icon.png",
+    "scalable": "scalable.svg"
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "permissions": ["tabs", "storage", "https://github.com/*", "http://cramike.synology.me:9000/*" ],
+  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:3000 'unsafe-eval'; connect-src http://localhost:3000 ws://localhost:3000 http://127.0.0.1:5000 http://cramike.synology.me:9000; style-src * 'unsafe-inline'; img-src 'self' data:;"
+}

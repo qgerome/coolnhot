@@ -1,15 +1,18 @@
 from dateutil.relativedelta import relativedelta
-from sqlalchemy.orm import Query
+from flask.ext.sqlalchemy import BaseQuery
+
 from sqlalchemy import sql
 from datetime import datetime
 from ..extensions import db
+import math
 
-
-class MeasurementQuery(Query):
+class MeasurementQuery(BaseQuery):
 	def avg(self, start_at=None, end_at=None):
 		if not end_at: end_at = datetime.utcnow()
 		if not start_at: start_at = end_at - relativedelta(minutes=30)
-		return db.session.query(sql.func.avg(Measurement.temperature), sql.func.avg(Measurement.humidity)).filter(Measurement.created_at.between(start_at, end_at)).first()
+
+		avg = db.session.query(sql.func.avg(Measurement.temperature), sql.func.avg(Measurement.humidity)).filter(Measurement.created_at.between(start_at, end_at)).first()
+		return dict(temperature=0.5 * math.ceil(2.0 * avg[0]), humidity=0.5 * math.ceil(2.0 * avg[1]))
 
 
 class Measurement(db.Model):
